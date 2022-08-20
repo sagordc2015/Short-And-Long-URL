@@ -24,7 +24,6 @@ public class HomeController {
     @GetMapping("/")
     public ModelAndView index(Model model) {
         ModelAndView mv = new ModelAndView("/WEB-INF/views/home.jsp");
-        mv.addObject("ok", "OKK");
         return mv;
     }
 
