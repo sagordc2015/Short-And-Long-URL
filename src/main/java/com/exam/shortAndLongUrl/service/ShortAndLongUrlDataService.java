@@ -4,29 +4,26 @@ import com.exam.shortAndLongUrl.utility.UrlValidation;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class ShortAndLongUrlDataService {
-    private Map<String, String> keyData;
-    private Map<String, String> valueData;
+
+    private Map<String, String> keyValueData;
     private String urlName;
     private int len;
-    private char chars[];
-    private Random random;
+    private char[] chars;
 
-    private UrlValidation urlValidation = new UrlValidation();
+    private UrlValidation urlValidation;
 
-    public ShortAndLongUrlDataService(){
-        keyData = new HashMap<>();
-        valueData = new HashMap<>();
-        random = new Random();
+    private ShortAndLongUrlDataService(){
+        urlValidation = new UrlValidation();
+        keyValueData = new HashMap<>();
         chars = new char[62];
         len = 8;
         for(int i = 0; i < 62; i++){
-            int k = 0;
+            int k;
             if(i < 10){
                 k = i + 48;
-            }else if(i > 9 && i <= 35){
+            }else if(i <= 35){
                 k = i + 55;
             }else{
                 k = i + 61;
@@ -44,4 +41,24 @@ public class ShortAndLongUrlDataService {
             urlName = newUrlName;
         }
     }
+
+    public String generateShortUrl(String longUrl){
+        String shortUrl = "";
+        if(urlValidation.urlValidate(longUrl)){
+            longUrl = urlValidation.differentProtocal(longUrl);
+            if(keyValueData.containsKey(longUrl)){
+                shortUrl = keyValueData.get(longUrl);
+            }else {
+                shortUrl = getRandomKey(longUrl);
+            }
+        }
+        return shortUrl;
+    }
+
+    private String getRandomKey(String longUrl){
+        String randomKey = urlValidation.randomKeyGenerate(len, chars);
+        keyValueData.put(longUrl, randomKey);
+        return randomKey;
+    }
+
 }

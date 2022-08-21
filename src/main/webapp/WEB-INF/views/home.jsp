@@ -10,8 +10,10 @@
 <head>
     <title>Title</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
 
 
@@ -23,19 +25,20 @@
         <div class="col-3"></div>
         <div class="col-6">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#shortToLongUrl">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#shortToLongUrl" onclick="clearForm()">
                 Short To Long URL
             </button>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#longToShortUrl">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#longToShortUrl" onclick="clearForm()">
                 Long To Short URL
             </button>
         </div>
         <div class="col-3"></div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="shortToLongUrl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+    <!-- Modal Short to Long URL -->
+    <div class="modal fade" id="shortToLongUrl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -45,23 +48,27 @@
                 <div class="modal-body">
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="short-long">@</span>
-                        <input type="text" class="form-control" placeholder="URL" aria-label="Username" aria-describedby="short-long" id="shortUrlId">
-                        <button class="btn btn-outline-secondary btn-primary" type="button" onclick="shortToLongUrl()">Button</button>
+                        <input type="text" class="form-control" placeholder="URL" aria-label="Username"
+                               aria-describedby="short-long" id="shortUrlId">
+                        <button class="btn btn-outline-secondary btn-primary" type="button" onclick="shortToLongUrl()">
+                            Button
+                        </button>
                     </div>
                     <div class="input-group flex-nowrap">
-                        <input type="text" class="form-control" placeholder="Long URL" aria-label="LongUrl" readonly id="showLongUrl">
+                        <input type="text" class="form-control" placeholder="Long URL" aria-label="LongUrl" readonly
+                               id="showLongUrl">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <%--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
-                    <%--                    <button type="button" class="btn btn-primary">Understood</button>--%>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="longToShortUrl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <!-- Modal Long to Short URL-->
+    <div class="modal fade" id="longToShortUrl" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -71,16 +78,19 @@
                 <div class="modal-body">
                     <div class="input-group flex-nowrap">
                         <span class="input-group-text" id="long-short">@</span>
-                        <input type="text" class="form-control" placeholder="URL" aria-label="Username" aria-describedby="long-short" id="longUrlId">
-                        <button class="btn btn-outline-secondary btn-primary" type="button" onclick="longToShortUrl()">Button</button>
+                        <input type="text" class="form-control" placeholder="URL" aria-label="Username"
+                               aria-describedby="long-short" id="longUrlId">
+                        <button class="btn btn-outline-secondary btn-primary" type="button" onclick="longToShortUrl()">
+                            Button
+                        </button>
                     </div>
                     <div class="input-group flex-nowrap">
-                        <input type="text" class="form-control" placeholder="Short URL" aria-label="ShortUrl" readonly="true" id="showShortUrl">
+                        <input type="text" class="form-control" placeholder="Short URL" aria-label="ShortUrl"
+                               readonly="true" id="showShortUrl">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <%--                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>--%>
-                    <%--                    <button type="button" class="btn btn-primary">Understood</button>--%>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -88,37 +98,74 @@
 </div>
 
 <script>
+    function clearForm() {
+        document.getElementById("shortUrlId").value = '';
+        document.getElementById("showShortUrl").value = '';
+        document.getElementById("longUrlId").value = '';
+        document.getElementById("showLongUrl").value = '';
+        $('#showShortUrl').css('background-color', 'white');
+        $('#showLongUrl').css('background-color', 'white');
+    }
     function longToShortUrl() {
         var longValue = document.getElementById('longUrlId').value;
         console.log(longValue);
-        $.ajax({
-            type: 'post',
-            url: '/longToShortUrl?longUrl='+encodeURIComponent(longValue),
-            dataType: 'json',
-            success: function(data) {
-                console.log(data);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        });
+        if(longValue.trim() == ''){
+            alert('URL name is blank, Please enter a valid URL!!!')
+        }else{
+            $.ajax({
+                type: 'post',
+                url: '/longToShortUrl?longUrl=' + encodeURIComponent(longValue),
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == "0") {
+                        document.getElementById('showShortUrl').value = data.url;
+                        $('#showShortUrl').css('background-color', 'green');
+                    } else if (data.code == "1") {
+                        alert(data.msg);
+                        document.getElementById('showShortUrl').value = data.url;
+                        $('#showShortUrl').css('background-color', 'yellow');
+                    } else {
+                        alert(data.msg);
+                        $('#showShortUrl').css('background-color', 'red');
+                        document.getElementById('showShortUrl').value = '';
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
     }
+
     function shortToLongUrl() {
         var shortValue = document.getElementById('shortUrlId').value;
         console.log(shortValue);
-        $.ajax({
-            type: 'post',
-            url: '/shortToLongUrl/'+shortValue,
-            dataType: 'json',
-            success: function(data) {
-                console.log(data);
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert(xhr.status);
-                alert(thrownError);
-            }
-        });
+        if(shortValue.trim() == ''){
+            alert('Short URL is blank, Please valid short URL!!!');
+        }else{
+            $.ajax({
+                type: 'post',
+                url: '/shortToLongUrl/' + shortValue,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == "0") {
+                        document.getElementById('showLongUrl').value = data.url;
+                        $('#showLongUrl').css('background-color', 'green');
+                    } else {
+                        alert(data.msg);
+                        $('#showLongUrl').css('background-color', 'red');
+                        document.getElementById('showLongUrl').value = '';
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
     }
 </script>
 </body>
